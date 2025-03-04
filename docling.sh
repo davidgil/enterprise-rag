@@ -1,0 +1,1 @@
+docling -v  --table-mode accurate --output sec-edgar-filings/md/ --image-export-mode placeholder  sec-edgar-filings/pdf/
