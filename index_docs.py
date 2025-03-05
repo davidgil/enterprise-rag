@@ -18,6 +18,7 @@ DATA_DIR = "data/md"
 ES_INDEX_NAME = "documents"
 CHUNK_SIZE = 1024  # Approximate size of each chunk in characters https://www.llamaindex.ai/blog/evaluating-the-ideal-chunk-size-for-a-rag-system-using-llamaindex-6207e5d3fec5
 MODEL_NAME = "multi-qa-mpnet-base-cos-v1"  # Model for generating embeddings
+ES_HOST = "http://localhost:9200"
 
 def read_markdown_files(directory: str) -> List[Dict[str, Any]]:
     """
@@ -135,7 +136,7 @@ def generate_embeddings(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         logger.error(f"Error generating embeddings: {e}")
         return chunks
 
-def index_chunks_to_elasticsearch(chunks: List[Dict[str, Any]], es_host: str = "localhost:9200"):
+def index_chunks_to_elasticsearch(chunks: List[Dict[str, Any]], es_host: str):
     """
     Indexes chunks into Elasticsearch.
     
@@ -221,7 +222,7 @@ def main():
     chunks_with_embeddings = generate_embeddings(chunks)
     
     # Index to Elasticsearch
-    #index_chunks_to_elasticsearch(chunks_with_embeddings)
+    index_chunks_to_elasticsearch(chunks_with_embeddings, ES_HOST)
     
     logger.info("Processing completed")
 
