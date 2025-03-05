@@ -49,7 +49,10 @@ def generate_query_embedding(query: str) -> List[float]:
 def search_documents(query_embedding: List[float], es_host: str, top_k: int) -> List[Dict[str, Any]]:
     """
     Search for documents using vector similarity.
-    
+    https://www.elastic.co/search-labs/blog/introduction-to-vector-search
+    https://www.elastic.co/search-labs/blog/vector-search-set-up-elasticsearch
+    https://www.elastic.co/search-labs/blog/hybrid-search-elasticsearch
+
     Args:
         query_embedding: The embedding vector of the query
         es_host: Elasticsearch host URL
@@ -68,18 +71,16 @@ def search_documents(query_embedding: List[float], es_host: str, top_k: int) -> 
         search_query = {
             "size": top_k,
             "query": {
-                "script_score": {
-                    "query": {"match_all": {}},
-                    "script": {
-                        "source": "cosineSimilarity(params.query_vector, 'vector_embedding') + 1.0",
-                        "params": {"query_vector": query_embedding}
-                    }
+                "knn": {
+                    "field": "vector_embedding",
+                    "query_vector": query_embedding,
+                    "num_candidates": 100
                 }
             },
             "_source": ["id", "doc_id", "path", "filename", "content", "chunk_index", "total_chunks"]
         }
         
-        logger.info(f"Searching in index '{ES_INDEX_NAME}'...")
+        logger.info(f"Searching in index '{ES_INDEX_NAME}' using KNN...")
         response = es.search(index=ES_INDEX_NAME, body=search_query)
         
         results = []
