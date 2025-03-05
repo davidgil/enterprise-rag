@@ -1,9 +1,9 @@
 import os
 import glob
+import logging
+import json
 from pathlib import Path
 from typing import List, Dict, Any
-import logging
-
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from chonkie import RecursiveChunker, RecursiveLevel, RecursiveRules
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 # Configuration
 DATA_DIR = "data/md"
 ES_INDEX_NAME = "documents"
-CHUNK_SIZE = 1024  # Approximate size of each chunk in characters https://www.llamaindex.ai/blog/evaluating-the-ideal-chunk-size-for-a-rag-system-using-llamaindex-6207e5d3fec5
+CHUNK_SIZE = 1024  # https://www.llamaindex.ai/blog/evaluating-the-ideal-chunk-size-for-a-rag-system-using-llamaindex-6207e5d3fec5
 MODEL_NAME = "multi-qa-mpnet-base-cos-v1"  # Model for generating embeddings
 ES_HOST = "http://localhost:9200"
 
@@ -82,17 +82,13 @@ def create_chunks(documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             logger.info(f"Total number of chunks: {len(doc_chunks)}")
 
             for i, chunk_text in enumerate(doc_chunks):
-                logger.info("--------------------------------")
-                logger.info(f"Chunk {i}: {chunk_text}")
-                logger.info("--------------------------------")
-
                 all_chunks.append({
                     "id": f"{doc['id']}_chunk_{i}",
                     "doc_id": doc["id"],
                     "path": doc["path"],
                     "filename": doc["filename"],
                     "chunk_index": i,
-                    "content": chunk_text,
+                    "content": chunk_text.text,
                     "total_chunks": len(doc_chunks)
                 })
                 
@@ -100,6 +96,7 @@ def create_chunks(documents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             logger.error(f"Error creating chunks for document {doc['id']}: {e}")
     
     logger.info(f"Created {len(all_chunks)} chunks from {len(documents)} documents")
+    
     return all_chunks
 
 def generate_embeddings(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -122,12 +119,8 @@ def generate_embeddings(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         logger.info(f"Generating embeddings for {len(texts)} chunks...")
         embeddings = model.encode(texts, show_progress_bar=True)
         
-        # Add embeddings to chunks
         for i, chunk in enumerate(chunks):
             chunk["vector_embedding"] = embeddings[i].tolist()
-            logger.info("--------------------------------")
-            logger.info(f"Chunk {i}: {chunk}")
-            logger.info("--------------------------------")
         
         logger.info(f"Embeddings generated successfully")
         return chunks
@@ -145,40 +138,18 @@ def index_chunks_to_elasticsearch(chunks: List[Dict[str, Any]], es_host: str):
         es_host: Elasticsearch host and port
     """
     try:
-        # Connect to Elasticsearch
         es = Elasticsearch([es_host])
         
         # Check if index exists, if not, create it
         if not es.indices.exists(index=ES_INDEX_NAME):
-            # Get embedding dimension from the first chunk
-            embedding_dims = len(chunks[0].get("vector_embedding", [])) if chunks else 768
-            
+            with open('elastic_index_template.json', 'r') as f:
+                index_template = json.load(f)
+                        
             es.indices.create(
                 index=ES_INDEX_NAME,
-                body={
-                    "mappings": {
-                        "properties": {
-                            "id": {"type": "keyword"},
-                            "doc_id": {"type": "keyword"},
-                            "path": {"type": "keyword"},
-                            "filename": {"type": "keyword"},
-                            "chunk_index": {"type": "integer"},
-                            "total_chunks": {"type": "integer"},
-                            "content": {
-                                "type": "text",
-                                "analyzer": "standard"
-                            },
-                            "vector_embedding": {
-                                "type": "dense_vector",
-                                "dims": embedding_dims,
-                                "index": True,
-                                "similarity": "cosine"
-                            }
-                        }
-                    }
-                }
+                body=index_template
             )
-            logger.info(f"Created index '{ES_INDEX_NAME}' with embedding dimension: {embedding_dims}")
+            logger.info(f"Created elasticsearch index '{ES_INDEX_NAME}'")
         
         # Prepare actions for bulk indexing
         actions = []
@@ -201,27 +172,22 @@ def main():
     """Main function that executes the complete process"""
     logger.info("Starting document processing")
     
-    # Check if data directory exists
     if not os.path.exists(DATA_DIR):
         logger.error(f"Directory {DATA_DIR} does not exist")
         return
     
-    # Read documents
     documents = read_markdown_files(DATA_DIR)
     if not documents:
         logger.warning("No documents found to process")
         return
     
-    # Create chunks
     chunks = create_chunks(documents)
     if not chunks:
         logger.warning("Could not create chunks")
         return
     
-    # Generate embeddings for chunks
     chunks_with_embeddings = generate_embeddings(chunks)
     
-    # Index to Elasticsearch
     index_chunks_to_elasticsearch(chunks_with_embeddings, ES_HOST)
     
     logger.info("Processing completed")

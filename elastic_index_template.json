@@ -1,0 +1,22 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {"type": "keyword"},
+      "doc_id": {"type": "keyword"},
+      "path": {"type": "keyword"},
+      "filename": {"type": "keyword"},
+      "chunk_index": {"type": "integer"},
+      "total_chunks": {"type": "integer"},
+      "content": {
+        "type": "text",
+        "analyzer": "standard"
+      },
+      "vector_embedding": {
+        "type": "dense_vector",
+        "dims": 768,
+        "index": true,
+        "similarity": "cosine"
+      }
+    }
+  }
+}
