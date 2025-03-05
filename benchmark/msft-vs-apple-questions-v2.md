@@ -1,13 +1,13 @@
 # Apple vs. Microsoft: Atomic Questions and Context
 
 ## 1. Revenue and Growth
-### Which company had higher total revenue in fiscal year 2024?
+### Which company, Apple or Microsoft, had higher total revenue in fiscal year 2024?
 - **Apple:** $391.035 billion  
   - *Document excerpt:* "Total net sales for 2024 were $391.035 billion."
 - **Microsoft:** $245.1 billion  
   - *Document excerpt:* "Total revenue for 2024 was $245.122 billion, an increase of $33.2 billion or 16% compared to 2023."
 
-### Which company had a higher revenue growth rate in fiscal year 2024?
+### Which company, Apple or Microsoft, had a higher revenue growth rate in fiscal year 2024?
 - **Apple:** **2.02% revenue growth**  
   - *Document excerpt:* "Total net sales for 2023 were $383.285 billion, compared to $391.035 billion in 2024. This represents an increase of approximately 2.02%."
 - **Microsoft:** **16% revenue growth**  
@@ -20,14 +20,14 @@
 - **Microsoft:** Productivity and Business Processes, Intelligent Cloud, More Personal Computing  
   - *Document excerpt:* "Microsoft operates through three business segments: Productivity and Business Processes, Intelligent Cloud, and More Personal Computing."
 
-### Which segment contributed the most revenue for each company?
+### Which segment contributed the most revenue for Apple and Microsoft?
 - **Apple:** iPhone sales ($201.183 billion)  
   - *Document excerpt:* "iPhone net sales accounted for $201.183 billion, representing over half of total company revenue."
 - **Microsoft:** Intelligent Cloud ($105.4 billion, 20% growth)  
   - *Document excerpt:* "Intelligent Cloud revenue was $105.4 billion, increasing 20% from the previous year."
 
 ## 3. Profitability and Margins
-### Which company had higher operating income in fiscal year 2024?
+### Which company, Apple or Microsoft, had higher operating income in fiscal year 2024?
 - **Apple:** $123.2 billion  
   - *Document excerpt:* "Total operating income: $123.216 billion in 2024."
 - **Microsoft:** $109.4 billion  

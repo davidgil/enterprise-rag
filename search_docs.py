@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import lmstudio as lms
 
 # Logging configuration
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 load_dotenv()
@@ -171,38 +171,46 @@ def format_rag_response(query: str, results: List[Dict[str, Any]], response: str
         response: The generated response from the LLM
     """
     print(f"\n{'=' * 80}\n")
+    # print(f"Based on {len(results)} retrieved documents:\n")
+    
+    # for i, result in enumerate(results):
+    #     print(f"Document {i+1} [Score: {result['score']:.4f}]")
+    #     print(f"Source: {result['filename']} (Chunk {result['chunk_index']+1}/{result['total_chunks']})")
+    #     print(f"Path: {result['path']}")
+    #     print(f"Content: {result['content'][:200]}..." if len(result['content']) > 200 else f"Content: {result['content']}")
+    #     print(f"\n{'-' * 40}\n")
+    
     print(f"QUESTION: {query}\n")
     print(f"ANSWER: {response}\n")
-    
-    print(f"Based on {len(results)} retrieved documents:\n")
-    
-    for i, result in enumerate(results):
-        print(f"Document {i+1} [Score: {result['score']:.4f}]")
-        print(f"Source: {result['filename']} (Chunk {result['chunk_index']+1}/{result['total_chunks']})")
-        print(f"Path: {result['path']}")
-        print(f"Content: {result['content'][:200]}..." if len(result['content']) > 200 else f"Content: {result['content']}")
-        print(f"\n{'-' * 40}\n")
-    
     print(f"{'=' * 80}\n")
 
-def main():
-    """Main function that executes the search process."""
-    args = parse_arguments()
+def process_search_query(query: str, top_k: int, use_rag: bool) -> None:
+    """
+    Process a search query, retrieve documents, and optionally generate a RAG response.
     
+    Args:
+        query: The search query
+        top_k: Number of results to return
+        use_rag: Whether to use RAG to generate an answer
+    """
     try:
-        query_embedding = generate_query_embedding(args.query)
-        results = search_documents(query_embedding, ES_HOST, args.top_k)
+        query_embedding = generate_query_embedding(query)
+        results = search_documents(query_embedding, ES_HOST, top_k)
         
-        if args.rag and results:
-            # Generate RAG response if --rag flag is used and results were found
-            response = generate_rag_response(args.query, results)
-            format_rag_response(args.query, results, response)
+        if use_rag and results:
+            response = generate_rag_response(query, results)
+            format_rag_response(query, results, response)
         else:
             # Otherwise just show the retrieved documents
             format_results(results)
         
     except Exception as e:
         logger.error(f"Search failed: {e}")
+
+def main():
+    """Main function that executes the search process."""
+    args = parse_arguments()
+    process_search_query(args.query, args.top_k, args.rag)
 
 if __name__ == "__main__":
     main() 

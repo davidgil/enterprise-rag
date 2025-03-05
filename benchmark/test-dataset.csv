@@ -1,0 +1,39 @@
+ID;Question;Document;Expected Answer;Context
+1;What was Apple's total revenue for fiscal year 2024?;apple.md;Total net sales for 2024 were $391.035 billion;
+2;How did Apple's revenue change from 2023 to 2024?;apple.md;Total net sales for 2023 were $383.285 billion, compared to $391.035 billion in 2024;
+3;What was Apple's revenue growth rate between 2023 and 2024?;apple.md;(391.035 - 383.285) / 383.285 = 2.02%;
+4;What was Apple's revenue growth rate between 2022 and 2023?;apple.md;(383.285 - 394.328) / 394.328 = -2.80%;
+5;What were Apple's net sales for fiscal year 2022?;apple.md;Total net sales for 2022 were $394.328 billion;
+6;How many employees does Apple have?;apple.md;As of September 28, 2024, the Company had approximately 164,000 full-time equivalent employees;
+7;What was Microsoft's total revenue for fiscal year 2024?;microsoft.md;Microsoft's total revenue for fiscal year 2024 was $245.1 billion, an increase of $33.2 billion or 16% compared to fiscal year 2023​;
+8;What was the revenue growth percentage for Microsoft in fiscal year 2024?;microsoft.md;Revenue increased by 16% compared to fiscal year 2023​;
+9;How much revenue did the Productivity and Business Processes segment generate in 2024?;microsoft.md;he Productivity and Business Processes segment generated $77.7 billion in revenue, an increase of 12% from 2023​;
+10;How much revenue did the Intelligent Cloud segment generate in 2024?;microsoft.md;The Intelligent Cloud segment generated $105.4 billion in revenue, an increase of 20% from 2023​;
+11;What was Microsoft's gross margin in fiscal year 2024?;microsoft.md;Gross margin was $171.0 billion, an increase of 17% from 2023​;
+12;What was Microsoft's operating income for fiscal year 2024?;microsoft.md;Operating income was $109.4 billion, an increase of 24% from 2023​;
+13;What was Microsoft's net income for fiscal year 2024?;microsoft.md;Net income was $88.1 billion, an increase of 22% from 2023​;
+14;What was Microsoft's earnings per share (EPS) for fiscal year 2024?;microsoft.md;Diluted earnings per share (EPS) was $11.80, an increase of 22% from 2023​;
+15;Which company, Apple or Microsoft, had higher total revenue in fiscal year 2024?;apple.md, microsoft.md;"**Apple:** $391.035 billion 
+- **Microsoft:** $245.1 billion
+- **Comparison:** Apple had **higher total revenue** than Microsoft in 2024.";".- **Apple:** $391.035 billion  
+  - *Document excerpt:* ""Total net sales for 2024 were $391.035 billion.""
+- **Microsoft:** $245.1 billion  
+  - *Document excerpt:* ""Total revenue for 2024 was $245.122 billion, an increase of $33.2 billion or 16% compared to 2023."""
+16;Which company, Apple or Microsoft, had a higher revenue growth rate in fiscal year 2024?;apple.md, microsoft.md;"**Apple:** **2.02%** revenue growth
+- **Microsoft:** **16%** revenue growth
+- **Comparison:** Microsoft's revenue growth was **significantly higher** than Apple’s.";"**Apple:** **2.02% revenue growth**  
+  - *Document excerpt:* ""Total net sales for 2023 were $383.285 billion, compared to $391.035 billion in 2024. This represents an increase of approximately 2.02%.""
+- **Microsoft:** **16% revenue growth**  
+  - *Document excerpt:* ""Revenue increased $33.2 billion or 16% driven by growth across each of our segments."""
+17;Which segment contributed the most revenue for Apple and Microsoft?;apple.md, microsoft.md;"**Apple:** **iPhone sales** were the largest revenue driver  
+- **Microsoft:** **Intelligent Cloud ($105.4 billion, 20% growth)** was the largest revenue driver
+- **Comparison:** Apple relies more on **hardware sales (iPhone)**, while Microsoft’s largest revenue comes from **cloud services**.";"**Apple:** iPhone sales ($201.183 billion)  
+  - *Document excerpt:* ""iPhone net sales accounted for $201.183 billion, representing over half of total company revenue.""
+- **Microsoft:** Intelligent Cloud ($105.4 billion, 20% growth)  
+  - *Document excerpt:* ""Intelligent Cloud revenue was $105.4 billion, increasing 20% from the previous year."""
+18;Which company, Apple or Microsoft, had higher operating income in fiscal year 2024?;apple.md, microsoft.md;"**Apple:** Not explicitly mentioned
+- **Microsoft:** **$109.4 billion** operating income (24% growth)
+- **Comparison:** Microsoft’s **operating income grew significantly** compared to Apple’s slower revenue growth.";"**Apple:** $123.2 billion  
+  - *Document excerpt:* ""Total operating income: $123.216 billion in 2024.""
+- **Microsoft:** $109.4 billion  
+  - *Document excerpt:* ""Operating income was $109.4 billion, an increase of 24% from 2023."""

@@ -2,13 +2,13 @@
 
 ## 1. Revenue and Growth
 ### Which company had higher total revenue in fiscal year 2024?
-- **Apple:** $391.035 billion&#8203;:contentReference[oaicite:0]{index=0}  
-- **Microsoft:** $245.1 billion&#8203;:contentReference[oaicite:1]{index=1}  
+- **Apple:** $391.035 billion 
+- **Microsoft:** $245.1 billion
 - **Comparison:** Apple had **higher total revenue** than Microsoft in 2024.
 
 ### Which company had a higher revenue growth rate in fiscal year 2024?
-- **Apple:** **2.02%** revenue growth&#8203;:contentReference[oaicite:2]{index=2}  
-- **Microsoft:** **16%** revenue growth&#8203;:contentReference[oaicite:3]{index=3}  
+- **Apple:** **2.02%** revenue growth
+- **Microsoft:** **16%** revenue growth
 - **Comparison:** Microsoft's revenue growth was **significantly higher** than Apple’s.
 
 ## 2. Revenue by Business Segments
@@ -17,14 +17,14 @@
 - **Microsoft:** **Productivity and Business Processes, Intelligent Cloud, More Personal Computing**&#8203;:contentReference[oaicite:5]{index=5}.
 
 ### Which segment contributed the most revenue for each company?
-- **Apple:** **iPhone sales** were the largest revenue driver&#8203;:contentReference[oaicite:6]{index=6}.  
-- **Microsoft:** **Intelligent Cloud ($105.4 billion, 20% growth)** was the largest revenue driver&#8203;:contentReference[oaicite:7]{index=7}.  
+- **Apple:** **iPhone sales** were the largest revenue driver  
+- **Microsoft:** **Intelligent Cloud ($105.4 billion, 20% growth)** was the largest revenue driver
 - **Comparison:** Apple relies more on **hardware sales (iPhone)**, while Microsoft’s largest revenue comes from **cloud services**.
 
 ## 3. Profitability and Margins
 ### Which company had higher operating income in fiscal year 2024?
-- **Apple:** Not explicitly mentioned&#8203;:contentReference[oaicite:8]{index=8}.  
-- **Microsoft:** **$109.4 billion** operating income (24% growth)&#8203;:contentReference[oaicite:9]{index=9}.  
+- **Apple:** Not explicitly mentioned
+- **Microsoft:** **$109.4 billion** operating income (24% growth)
 - **Comparison:** Microsoft’s **operating income grew significantly** compared to Apple’s slower revenue growth.
 
 ### Which company had a higher net income in fiscal year 2024?
