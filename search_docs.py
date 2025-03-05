@@ -1,7 +1,6 @@
 import argparse
 import logging
 from typing import List, Dict, Any
-import json
 import os
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
@@ -11,7 +10,6 @@ from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Configuration from environment variables
 load_dotenv()
 ES_INDEX_NAME = os.getenv("ES_INDEX_NAME", "documents")
 MODEL_NAME = os.getenv("MODEL_NAME", "multi-qa-mpnet-base-cos-v1")

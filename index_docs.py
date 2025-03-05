@@ -15,7 +15,6 @@ import os
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Configuration
 load_dotenv()
 ES_INDEX_NAME = os.getenv("ES_INDEX_NAME")
 MODEL_NAME = os.getenv("MODEL_NAME")

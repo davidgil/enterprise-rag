@@ -66,11 +66,12 @@ Once Elasticsearch is running, you can run the indexing script:
 python index_docs.py
 ```
 
-### Common Troubleshooting
+## Using the Search Script
 
-- **Connection Error**: Make sure Elasticsearch is running before executing the indexer.
-- **Insufficient Memory**: If Docker reports memory issues, you can adjust the `ES_JAVA_OPTS` parameters in the `docker-compose.yml` file.
+To search for documents, run the following command:
 
-
+```shell
+python search_docs.py "Apple total net sales" --top-k 3
+```
 
 
