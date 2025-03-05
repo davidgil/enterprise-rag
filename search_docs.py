@@ -5,16 +5,18 @@ import os
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
+import lmstudio as lms
 
 # Logging configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 load_dotenv()
-ES_INDEX_NAME = os.getenv("ES_INDEX_NAME", "documents")
-MODEL_NAME = os.getenv("MODEL_NAME", "multi-qa-mpnet-base-cos-v1")
-ES_HOST = os.getenv("ES_HOST", "http://localhost:9200")
+ES_INDEX_NAME = os.getenv("ES_INDEX_NAME")
+MODEL_NAME = os.getenv("MODEL_NAME")
+ES_HOST = os.getenv("ES_HOST")
 DEFAULT_TOP_K = 5
+LLM_MODEL = os.getenv("LLM_MODEL")
 
 def parse_arguments():
     """Parse command line arguments."""
@@ -22,6 +24,8 @@ def parse_arguments():
     parser.add_argument("query", type=str, help="The search query")
     parser.add_argument("--top-k", type=int, default=DEFAULT_TOP_K, 
                         help=f"Number of results to return (default: {DEFAULT_TOP_K})")
+    parser.add_argument("--rag", action="store_true", 
+                        help="Use RAG to generate an answer using retrieved documents")
     return parser.parse_args()
 
 def generate_query_embedding(query: str) -> List[float]:
@@ -96,6 +100,46 @@ def search_documents(query_embedding: List[float], es_host: str, top_k: int) -> 
         logger.error(f"Error searching in Elasticsearch: {e}")
         return []
 
+def generate_rag_response(query: str, results: List[Dict[str, Any]]) -> str:
+    """
+    Generate a response using RAG (Retrieval Augmented Generation).
+    
+    Args:
+        query: The user's query
+        results: The retrieved documents to use as context
+        
+    Returns:
+        Generated response from the LLM
+    """
+    try:
+        logger.info(f"Generating RAG response using LLM model '{LLM_MODEL}'...")
+        
+        # Prepare context from retrieved documents
+        context = ""
+        for i, result in enumerate(results):
+            context += f"Document {i+1}: {result['content']}\n\n"
+        
+        # Create prompt with context and query
+        prompt = f"""You are a helpful assistant. Use the following retrieved documents to answer the user's question.
+If you don't know the answer based on these documents, just say so.
+
+RETRIEVED DOCUMENTS:
+{context}
+
+USER QUESTION: {query}
+
+ANSWER:"""
+
+        model = lms.llm(LLM_MODEL)
+        response = model.respond(prompt)
+        
+        logger.info("RAG response generated successfully")
+        return response
+        
+    except Exception as e:
+        logger.error(f"Error generating RAG response: {e}")
+        return f"Error generating response: {str(e)}"
+
 def format_results(results: List[Dict[str, Any]]) -> None:
     """
     Format and print search results.
@@ -117,6 +161,30 @@ def format_results(results: List[Dict[str, Any]]) -> None:
         print(f"Content: {result['content']}")
         print(f"\n{'=' * 80}\n")
 
+def format_rag_response(query: str, results: List[Dict[str, Any]], response: str) -> None:
+    """
+    Format and print RAG response with supporting documents.
+    
+    Args:
+        query: The original query
+        results: List of search results used as context
+        response: The generated response from the LLM
+    """
+    print(f"\n{'=' * 80}\n")
+    print(f"QUESTION: {query}\n")
+    print(f"ANSWER: {response}\n")
+    
+    print(f"Based on {len(results)} retrieved documents:\n")
+    
+    for i, result in enumerate(results):
+        print(f"Document {i+1} [Score: {result['score']:.4f}]")
+        print(f"Source: {result['filename']} (Chunk {result['chunk_index']+1}/{result['total_chunks']})")
+        print(f"Path: {result['path']}")
+        print(f"Content: {result['content'][:200]}..." if len(result['content']) > 200 else f"Content: {result['content']}")
+        print(f"\n{'-' * 40}\n")
+    
+    print(f"{'=' * 80}\n")
+
 def main():
     """Main function that executes the search process."""
     args = parse_arguments()
@@ -124,7 +192,14 @@ def main():
     try:
         query_embedding = generate_query_embedding(args.query)
         results = search_documents(query_embedding, ES_HOST, args.top_k)
-        format_results(results)
+        
+        if args.rag and results:
+            # Generate RAG response if --rag flag is used and results were found
+            response = generate_rag_response(args.query, results)
+            format_rag_response(args.query, results, response)
+        else:
+            # Otherwise just show the retrieved documents
+            format_results(results)
         
     except Exception as e:
         logger.error(f"Search failed: {e}")
