@@ -8,17 +8,20 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 from chonkie import RecursiveChunker, RecursiveLevel, RecursiveRules
 from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv
+import os
 
 # Logging configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 # Configuration
-DATA_DIR = "data/md"
-ES_INDEX_NAME = "documents"
+load_dotenv()
+ES_INDEX_NAME = os.getenv("ES_INDEX_NAME")
+MODEL_NAME = os.getenv("MODEL_NAME")
+ES_HOST = os.getenv("ES_HOST")
+DATA_DIR = os.getenv("DATA_DIR")
 CHUNK_SIZE = 1024  # https://www.llamaindex.ai/blog/evaluating-the-ideal-chunk-size-for-a-rag-system-using-llamaindex-6207e5d3fec5
-MODEL_NAME = "multi-qa-mpnet-base-cos-v1"  # Model for generating embeddings
-ES_HOST = "http://localhost:9200"
 
 def read_markdown_files(directory: str) -> List[Dict[str, Any]]:
     """
