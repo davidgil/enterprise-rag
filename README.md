@@ -58,6 +58,8 @@ If you also want to remove the volumes (this will delete all indexed data):
 docker-compose down -v
 ```
 
+# Using the system
+
 ## Using the Indexer
 
 Once Elasticsearch is running, you can run the indexing script:
@@ -66,12 +68,17 @@ Once Elasticsearch is running, you can run the indexing script:
 python index_docs.py
 ```
 
-## Using the Search Script
+## Using the Decomposed Search System
 
-To search for documents, run the following command:
+The decomposed search system breaks down complex questions into simpler sub-questions, processes each sub-question separately, and returns the results for each. This approach can improve the quality of answers for complex, multi-part questions.
+
 
 ```shell
-python search_docs.py "Apple total net sales" --top-k 3
+python run_decomposed_search.py
 ```
 
+# Useful material
 
+- [Hybrid search with opensearch](https://opensearch.org/blog/hybrid-search/)
+- [LLM as a judge](https://www.evidentlyai.com/llm-guide/llm-as-a-judge#:~:text=LLM%2Das%2Da%2DJudge%20is%20an%20evaluation%20method%20to,%2C%20Q%26A%20systems%2C%20or%20agents.) 
+- [Query breakdown](https://haystack.deepset.ai/blog/query-decomposition)
