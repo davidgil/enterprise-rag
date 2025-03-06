@@ -77,6 +77,31 @@ The decomposed search system breaks down complex questions into simpler sub-ques
 python run_decomposed_search.py
 ```
 
+# RESULTS
+
+# Github repo with all code and documentation: 
+- https://github.com/davidgil/enterprise-rag/ (main branch with basic implementation).  This basic implementation is a basic RAG without query breakdown.
+- https://github.com/davidgil/enterprise-rag/tree/query-breakdown (branch with query breakdown implementation). This implementation is a basic RAG with query breakdown using LLM.
+
+# Benchmark Dataset: 
+- Data is based in Apple and Microsoft 10K filings in PDF
+- Converted in markdown using docling
+- Data is stored in /data folder
+- Benchmark dataset is stored in benchmark/test-dataset.csv file (questions and answers crafted by ChatGPT)
+
+# Codebase: 
+- index_docs.py used to index documents in ElasticSearch DB
+- run_decomposed_search.py used to run the inference phase 
+
+# Results: 
+- In benchmark/text-dataset.xlsx file you can find the results of the execution using the basic implementation. In summary, the RAG without query breakdown is able to answer 12/14 basic questions correctly (question about 1 company). With complex questions (involving several PDFs), the RAG is not able to answer correctly.
+- In benchmark/text-dataset-query-breakdown.xlsx file you can find the results of the execution using the query breakdown implementation. With complex questions (involving several PDFs), the RAG is able to answer better than the basic implementation. Probably the PROMPT used for query breakdown can be improved.
+
+# Local LLM: 
+- All the tests have been done using a local LLM based in Microsoft Phi-4 hosted locally using LM Studio.
+
+
+
 # Useful material
 
 - [Hybrid search with opensearch](https://opensearch.org/blog/hybrid-search/)

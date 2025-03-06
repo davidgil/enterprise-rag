@@ -1,7 +1,0 @@
-ID;Question;Document;Expected Answer;Context
-15;Which company, Apple or Microsoft, had higher total revenue in fiscal year 2024?;apple.md, microsoft.md;"**Apple:** $391.035 billion 
-- **Microsoft:** $245.1 billion
-- **Comparison:** Apple had **higher total revenue** than Microsoft in 2024.";".- **Apple:** $391.035 billion  
-  - *Document excerpt:* ""Total net sales for 2024 were $391.035 billion.""
-- **Microsoft:** $245.1 billion  
-  - *Document excerpt:* ""Total revenue for 2024 was $245.122 billion, an increase of $33.2 billion or 16% compared to 2023."""
